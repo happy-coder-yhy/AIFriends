@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import path from 'path'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,6 +13,7 @@ export default defineConfig({
     vue(),
     vueJsx(),
     vueDevTools(),
+    tailwindcss(),
   ],
   build: {
     outDir: path.resolve(__dirname, '../backend/static/frontend'), // 打包到 Django static

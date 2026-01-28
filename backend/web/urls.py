@@ -1,14 +1,19 @@
 from django.urls import path, re_path
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+
 from . import views
+from .views.index import index
+from .views.user.account.login import LoginView
+from .views.user.account.logout import LogoutView
+from .views.user.account.refresh_token import RefreshTokenView
+from .views.user.account.register import RegisterView
 
 urlpatterns = [
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # 前端页面路由 - 匹配所有非 API 路径
-    re_path(r'^(?!api/|admin/|media/|assets/).*$', views.frontend_view),
+    path('api/user/account/login/', LoginView.as_view()),
+    path('api/user/account/logout/', LogoutView.as_view()),
+    path('api/user/account/register/', RegisterView.as_view()),
+    path('api/user/account/refresh_token/', RefreshTokenView.as_view()),
+
+    # 前端页面路由
+    path('', index),
 ]
 

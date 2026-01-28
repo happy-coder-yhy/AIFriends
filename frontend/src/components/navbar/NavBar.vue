@@ -4,8 +4,10 @@ import FriendIcon from './icons/FriendIcon.vue';
 import HomepageIcon from './icons/HomepageIcon.vue';
 import MenuIcon from './icons/MenuIcon.vue';
 import SearchIcon from './icons/SearchIcon.vue';
+import { useUserStore } from '@/stores/user.ts';
+import UserMenu from './UserMenu.vue';
 
-
+const user = useUserStore();
 </script>
 
 <template>
@@ -22,8 +24,8 @@ import SearchIcon from './icons/SearchIcon.vue';
                     <div class="px-2 font-bold text-xl">AI Friends</div>
                 </div>
                 
-                <div class="navbar-center w-4/5 max-w-180">
-                    <div class="join w-4/5">
+                <div class="navbar-center w-4/5 max-w-180 flex justify-center">
+                    <div class="join w-4/5 flex justify-center">
                         <input class="input join-item rounded-l-full w-4/5" placeholder="搜索你感兴趣的内容" />
                         <button class="btn join-item rounded-r-full gap-0">
                             <SearchIcon />
@@ -33,9 +35,16 @@ import SearchIcon from './icons/SearchIcon.vue';
                 </div>
                 
                 <div class="navbar-end">
-                    <button class="btn btn-ghost text-lg mx-3">
+                    <RouterLink v-if="user.isLogin()" :to="{name: 'create-index'}" active-class="btn-active" class="btn btn-ghost text-base mr-6">
+                        <CreateIcon />
+                        创作
+                    </RouterLink>
+
+                    <RouterLink v-if="!user.isLogin()" :to="{name: 'user-account-login-index'}" active-class="btn-active" class="btn btn-ghost text-lg mx-3">
                         登录
-                    </button>
+                    </RouterLink>
+
+                    <UserMenu v-else/>
                 </div>
             </nav>
             <!-- Page content here -->
@@ -48,25 +57,25 @@ import SearchIcon from './icons/SearchIcon.vue';
                 <!-- Sidebar content here -->
                 <ul class="menu w-full grow">
                     <li>
-                        <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3" data-tip="首页">
+                        <RouterLink :to="{name: 'homepage-index'}" active-class="menu-focus" class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3" data-tip="首页">
                             <!-- Home icon -->
                             <HomepageIcon />
                             <span class="is-drawer-close:hidden text-base ml-2 whitespace-nowrap">首页</span>
-                        </button>
+                        </RouterLink>
                     </li>
                     <li>
-                        <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3" data-tip="好友">
+                        <RouterLink :to="{name: 'friend-index'}" active-class="menu-focus" class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3" data-tip="好友">
                             <!-- Friends icon -->
                             <FriendIcon />
                             <span class="is-drawer-close:hidden text-base ml-2 whitespace-nowrap">好友</span>
-                        </button>
+                        </RouterLink>
                     </li>
                     <li>
-                        <button class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3" data-tip="创作">
+                        <RouterLink :to="{name: 'create-index'}" active-class="menu-focus" class="is-drawer-close:tooltip is-drawer-close:tooltip-right py-3" data-tip="创作">
                             <!-- Create icon -->
                             <CreateIcon />
                             <span class="is-drawer-close:hidden text-base ml-2 whitespace-nowrap">创作</span>
-                        </button>
+                        </RouterLink>
                     </li>
                 </ul>
             </div>

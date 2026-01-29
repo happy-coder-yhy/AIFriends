@@ -16,5 +16,6 @@ urlpatterns = [
     path('api/user/account/get_user_info/', GetUserInfoView.as_view()),
     # 前端页面路由
     path('', index),
+    re_path(r'^(?!media/|static/|assets/).*$', index),
 ]
 

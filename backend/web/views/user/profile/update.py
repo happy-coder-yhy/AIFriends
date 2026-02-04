@@ -21,24 +21,24 @@ class UpdateProfileView(APIView):
 
             if not username:
                 return Response({
-                    'result': '用户名不能为空'
+                    'result': '用户名不能为空!'
                 })
 
             if not profile:
                 return Response({
-                    'result': '简介不能为空'
+                    'result': '简介不能为空!'
                 })
 
             if username != user.username and User.objects.filter(username=username).exists():
                 return Response({
-                    'result': '用户名已存在'
+                    'result': '用户名已存在!'
                 })
 
             if photo:
                 remove_old_photo(user_profile.photo)
                 user_profile.photo = photo
 
-            user_profile.private = profile
+            user_profile.profile = profile
             user_profile.update_time = now()
             user_profile.save()
             user.username = username
@@ -54,5 +54,5 @@ class UpdateProfileView(APIView):
 
         except:
             return Response({
-                'result': '系统异常，请重试'
+                'result': '系统异常，请重试!'
             })

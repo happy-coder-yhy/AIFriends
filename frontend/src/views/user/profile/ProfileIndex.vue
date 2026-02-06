@@ -66,7 +66,7 @@ async function handleUpdate() {
 
     <!-- 修改框 -->
     <div class="flex justify-center mt-16">
-        <div class="card w-120 bg-base-200 shadow-sm">
+        <div class="card w-120 bg-blue-300 shadow-sm">
             <div class="card-body">
                 <h3 class="text-lg font-bold my-1">编辑资料</h3>
                 <Photo ref="photo-ref" :photo="user.photo" />

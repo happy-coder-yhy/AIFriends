@@ -2,6 +2,7 @@ from django.urls import path, re_path
 
 from . import views
 from .views.create.character.create import CreateCharacterView
+from .views.create.character.get_list import GetListCharacterView
 from .views.create.character.get_single import GetSingleCharacterView
 from .views.create.character.remove import RemoveCharacterView
 from .views.create.character.update import UpdateCharacterView
@@ -29,6 +30,9 @@ urlpatterns = [
     path('api/create/character/update/', UpdateCharacterView.as_view()),
     path('api/create/character/remove/', RemoveCharacterView.as_view()),
     path('api/create/character/get_single/', GetSingleCharacterView.as_view()),
+
+    # 个人空间
+    path('api/create/character/get_list/', GetListCharacterView.as_view()),
 
     # 前端页面路由
     path('', index),

@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref, useTemplateRef, nextTick, onMounted, onBeforeMount, onBeforeUnmount } from 'vue'
+import { ref, useTemplateRef, nextTick, onMounted, onBeforeMount, onBeforeUnmount, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import api from '@/ts/http/api'
 import Character from '@/components/character/character.vue'
+
+const route = useRoute()
 
 const characters: any = ref([])
 const isLoading = ref(false)
@@ -25,6 +28,7 @@ async function loadMore() {
         const res = await api.get('/api/homepage/index/', {
             params: {
                 items_count: characters.value.length,
+                search_query: route.query.q || '',
             }
         })
         const data = res.data
@@ -71,6 +75,17 @@ onMounted(async () => {
     observer.observe(sentinelRef.value)
 })
 
+function reset() {
+    characters.value = []
+    isLoading.value = false
+    hasCharacters.value = true
+    loadMore()
+}
+
+watch(() => route.query.q, newQ => {
+    reset()
+})
+
 onBeforeUnmount(() => {
     observer?.disconnect()
 })
@@ -79,7 +94,7 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="flex flex-col items-center mb-12">
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-9 mt-12 justify-items-center w-full px-9">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-6 mt-12 justify-items-center w-full px-9">
             <Character 
                 v-for="character in characters"
                 :key="character.id"

@@ -6,6 +6,7 @@ from .views.create.character.get_list import GetListCharacterView
 from .views.create.character.get_single import GetSingleCharacterView
 from .views.create.character.remove import RemoveCharacterView
 from .views.create.character.update import UpdateCharacterView
+from .views.homepage.index import HomepageIndexView
 from .views.index import index
 from .views.user.account.get_user_info import GetUserInfoView
 from .views.user.account.login import LoginView
@@ -33,6 +34,9 @@ urlpatterns = [
 
     # 个人空间
     path('api/create/character/get_list/', GetListCharacterView.as_view()),
+
+    # 首页
+    path('api/homepage/index/', HomepageIndexView.as_view()),
 
     # 前端页面路由
     path('', index),

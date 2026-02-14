@@ -20,7 +20,7 @@ class GetListFriendView(APIView):
                 author = character.author
                 friends.append({
                     'id': friend.id,
-                    character: {
+                    'character': {
                         'id': character.id,
                         'name': character.name,
                         'profile': character.profile,

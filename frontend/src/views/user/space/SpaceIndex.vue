@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import UserInfoField from './components/UserInfoField.vue';
-import { ref, useTemplateRef, nextTick, onMounted, onBeforeMount, onBeforeUnmount } from 'vue';
+import { ref, useTemplateRef, nextTick, onMounted, onBeforeMount, onBeforeUnmount, watch } from 'vue';
 import api from '@/ts/http/api'
 import Character from '@/components/character/character.vue';
 
@@ -13,6 +13,18 @@ const characters: any = ref([])
 const isLoading = ref(false)
 const hasCharacters = ref(true)
 const sentinelRef = useTemplateRef('sentinel-ref')
+
+function reset() {
+    userProfile.value = null
+    characters.value = []
+    isLoading.value = false
+    hasCharacters.value = true
+    loadMore()
+}
+
+watch(() => route.params.user_id, () => {
+    reset()
+})
 
 function checkSentinelVisible() {  // 判断哨兵是否能被看到
   if (!sentinelRef.value) return false

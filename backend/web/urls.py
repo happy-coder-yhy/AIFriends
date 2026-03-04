@@ -8,6 +8,7 @@ from .views.create.character.remove import RemoveCharacterView
 from .views.create.character.update import UpdateCharacterView
 from .views.friend.get_list import GetListFriendView
 from .views.friend.get_or_create import GetOrCreateFriendView
+from .views.friend.message.chat.chat import MessageChatView
 from .views.friend.remove import RemoveFriendView
 from .views.homepage.index import HomepageIndexView
 from .views.index import index
@@ -45,6 +46,9 @@ urlpatterns = [
     path('api/friend/get_or_create/', GetOrCreateFriendView.as_view()),
     path('api/friend/remove/', RemoveFriendView.as_view()),
     path('api/friend/get_list/', GetListFriendView.as_view()),
+
+    # 大模型
+    path('api/friend/message/chat/', MessageChatView.as_view()),
 
     # 前端页面路由
     path('', index),

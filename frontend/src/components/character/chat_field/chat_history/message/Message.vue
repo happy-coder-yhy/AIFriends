@@ -9,12 +9,12 @@ const user = useUserStore()
 <template>
     <div v-if="message.content">
         <div v-if="message.role === 'ai'" class="chat chat-start">
-            <div class="chat-image avatar">
+            <div class="chat-image avatar ml-2">
                 <div class="w-10 rounded-full">
                     <img :src="character.photo" alt="">
                 </div>
             </div>
-            <div class="chat-bubble whitespace-pre-wrap">{{ message.content }}</div>
+            <div class="chat-bubble whitespace-pre-wrap break-all">{{ message.content }}</div>
         </div>
         <div v-else>
             <div class="chat chat-end">
@@ -23,11 +23,11 @@ const user = useUserStore()
                         <img :src="user.photo" alt="">
                     </div>
                 </div>
-                <div class="chat-bubble chat-bubble-primary whitespace-pre-wrap">{{ message.content }}</div>
+                <div class="chat-bubble chat-bubble-primary whitespace-pre-wrap break-all">{{ message.content }}</div>
             </div>
         </div>
     </div>
-    
+
 </template>
 
 <style scoped>

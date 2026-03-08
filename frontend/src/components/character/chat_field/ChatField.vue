@@ -53,16 +53,16 @@ defineExpose({
     <dialog ref="modal-ref" class="modal">
         <div class="modal-box w-92 h-150" :style="modalStyle">
             <button @click="modalRef?.close()" class="btn btn-xs btn-circle btn-ghost bg-red-500 absolute top-3 right-2">✕</button>
-            <ChatHistory 
-              ref="chat-history-ref" 
-              v-if="friend" 
+            <ChatHistory
+              ref="chat-history-ref"
+              v-if="friend"
               :history="history"
               :friendId="friend.id"
               :character="friend.character"
               @pushFrontMessage="handlePushFrontMessage"
             />
-            <InputField 
-              v-if="friend" 
+            <InputField
+              v-if="friend"
               ref="input-ref"
               :friendId="friend.id"
               @pushBackMessage="handlePushBackMessage"

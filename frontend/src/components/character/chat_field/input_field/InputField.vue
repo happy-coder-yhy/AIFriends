@@ -15,11 +15,12 @@ function focus() {
 }
 
 async function handleSend() {
+    const content = message.value.trim()
+    if (!content) return
+
     if (isProcessing) return // 正在提交中
     isProcessing = true
 
-    const content = message.value.trim()
-    if (!content) return
     message.value = ''
 
     emit('pushBackMessage', {role: 'user', content: content, id: crypto.randomUUID()})

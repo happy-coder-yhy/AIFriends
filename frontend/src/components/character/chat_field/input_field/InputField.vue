@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTemplateRef, ref } from 'vue';
+import { useTemplateRef, ref, onUnmounted } from 'vue';
 import MicrophoneIcon from '../../icons/MicrophoneIcon.vue';
 import SendIcon from '../../icons/SendIcon.vue';
 import streamApi from '@/ts/http/streamApi'
@@ -11,6 +11,92 @@ const inputRef = useTemplateRef('input-ref')
 const message = ref('')
 let processId = 0
 const showMic = ref(false)
+
+let mediaSource: any = null;
+let sourceBuffer: any = null;
+let audioPlayer = new Audio(); // 全局播放器实例
+let audioQueue: any = [];           // 待写入 Buffer 的二进制队列
+let isUpdating = false;        // Buffer 是否正在写入
+
+const initAudioStream = () => {
+    audioPlayer.pause();
+    audioQueue = [];
+    isUpdating = false;
+
+    mediaSource = new MediaSource();
+    audioPlayer.src = URL.createObjectURL(mediaSource);
+
+    mediaSource.addEventListener('sourceopen', () => {
+        try {
+            sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+            sourceBuffer.addEventListener('updateend', () => {
+                isUpdating = false;
+                processQueue();
+            });
+        } catch (e) {
+            console.error("MSE AddSourceBuffer Error:", e);
+        }
+    });
+
+    audioPlayer.play().catch(e => console.error("等待用户交互以播放音频"));
+};
+
+const processQueue = () => {
+    if (isUpdating || audioQueue.length === 0 || !sourceBuffer || sourceBuffer.updating) {
+        return;
+    }
+
+    isUpdating = true;
+    const chunk = audioQueue.shift();
+    try {
+        sourceBuffer.appendBuffer(chunk);
+    } catch (e) {
+        console.error("SourceBuffer Append Error:", e);
+        isUpdating = false;
+    }
+};
+
+const stopAudio = () => {
+    audioPlayer.pause();
+    audioQueue = [];
+    isUpdating = false;
+
+    if (mediaSource) {
+        if (mediaSource.readyState === 'open') {
+            try {
+                mediaSource.endOfStream();
+            } catch (e) {
+            }
+        }
+        mediaSource = null;
+    }
+
+    if (audioPlayer.src) {
+        URL.revokeObjectURL(audioPlayer.src);
+        audioPlayer.src = '';
+    }
+};
+
+const handleAudioChunk = (base64Data: any) => {  // 将语音片段添加到播放器队列中
+    try {
+        const binaryString = atob(base64Data);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        audioQueue.push(bytes);
+        processQueue();
+    } catch (e) {
+        console.error("Base64 Decode Error:", e);
+    }
+};
+
+onUnmounted(() => {
+    audioPlayer.pause();
+    audioPlayer.src = '';
+});
 
 function focus() {
     inputRef.value?.focus()
@@ -25,6 +111,8 @@ async function handleSend(event: any, audio_msg?: any) {
     }
     
     if (!content) return
+
+    initAudioStream()
 
     const curId = ++processId
     message.value = ''
@@ -45,6 +133,10 @@ async function handleSend(event: any, audio_msg?: any) {
                     // console.log(data.content)
                     emit('addToLastMessage', data.content)
                 }
+
+                if (data.audio) {
+                    handleAudioChunk(data.audio)
+                }
             },
             onerror(err: any) {
       
@@ -58,10 +150,12 @@ async function handleSend(event: any, audio_msg?: any) {
 function close() {
     ++processId
     showMic.value = false
+    stopAudio()
 }
 
 function handleStop() {
     ++ processId
+    stopAudio()
 }
 
 defineExpose({

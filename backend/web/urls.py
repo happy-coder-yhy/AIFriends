@@ -8,6 +8,7 @@ from .views.create.character.remove import RemoveCharacterView
 from .views.create.character.update import UpdateCharacterView
 from .views.friend.get_list import GetListFriendView
 from .views.friend.get_or_create import GetOrCreateFriendView
+from .views.friend.message.asr.asr import ASRView
 from .views.friend.message.chat.chat import MessageChatView
 from .views.friend.message.get_history import GetHistoryView
 from .views.friend.remove import RemoveFriendView
@@ -53,6 +54,9 @@ urlpatterns = [
 
     # 获取历史对话记录
     path('api/friend/message/get_history/', GetHistoryView.as_view()),
+
+    # 语音识别
+    path('api/friend/message/asr/asr/', ASRView.as_view()),
 
     # 前端页面路由
     path('', index),

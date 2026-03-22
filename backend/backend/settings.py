@@ -136,7 +136,7 @@ else:
 if DEBUG:
     MEDIA_URL = 'http://127.0.0.1:8000/media/'
 else:
-    MEDIA_URL = 'https://app7726.acapp.acwing.com.cn/media'
+    MEDIA_URL = 'https://app7726.acapp.acwing.com.cn/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -167,5 +167,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://app7726.acapp.acwing.com.cn",
 ]
 

@@ -1,4 +1,4 @@
-const platform: string = 'django' // vue, djaingo, cloud
+const platform: string = 'vue' // vue, djaingo, cloud
 
 const CONFIG_API = {
     HTTP_URL: '',
@@ -16,4 +16,4 @@ if (platform === 'vue') {
     CONFIG_API.VAD_URL = 'https://app7726.acapp.acwing.com.cn/static/frontend/vad/'
 }
 
-export default CONFIG_API 
+export default CONFIG_API

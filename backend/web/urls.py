@@ -6,6 +6,7 @@ from .views.create.character.get_list import GetListCharacterView
 from .views.create.character.get_single import GetSingleCharacterView
 from .views.create.character.remove import RemoveCharacterView
 from .views.create.character.update import UpdateCharacterView
+from .views.create.character.voice.get_list import GetVoiceList
 from .views.friend.get_list import GetListFriendView
 from .views.friend.get_or_create import GetOrCreateFriendView
 from .views.friend.message.asr.asr import ASRView
@@ -37,6 +38,7 @@ urlpatterns = [
     path('api/create/character/update/', UpdateCharacterView.as_view()),
     path('api/create/character/remove/', RemoveCharacterView.as_view()),
     path('api/create/character/get_single/', GetSingleCharacterView.as_view()),
+    path('api/create/character/voice/get_list/', GetVoiceList.as_view()),
 
     # 个人空间
     path('api/create/character/get_list/', GetListCharacterView.as_view()),
